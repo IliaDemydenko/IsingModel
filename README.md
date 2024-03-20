@@ -7,7 +7,6 @@ Functions:
 - Magnetization(S) - calculates magnetization of configuration S;
 - Energy_S(i,j) - calculates interaction energy for element ij;
 - metropolis(nSteps,T) - realize implements Metropolis-Hastings algorithm for nSteps and temperature T;
-- Probability(Eobs,T) - calculates probability of each configuration based on Gibbs distribution;
 - Observable_Magnetisation(Eobs,Mobs,T) - calculates observable magnetization;
 - Heat_capacity(Eobs,T) - calculates observable heat capacity.
 - Observable_Energy(Eobs,T) - calculates observable energy;

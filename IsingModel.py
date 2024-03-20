@@ -4,12 +4,12 @@ import random
 
 #=======================================================
 #here you describe the parameters of the system
-Nx = 10 #number of spins in x direction
-Ny = 10 #number of spins in y direction
+Nx = 20 #number of spins in x direction
+Ny = 20 #number of spins in y direction
 J = 1 #interaction energy
 kB = 1 #Boltzman constant
 Tc = 2 * J / (kB * np.log(np.sqrt(2) + 1)) #critical temperature
-nSteps = 10000 #number of steps for Metropolis algorithm
+nSteps = 1000000 #number of steps for Metropolis algorithm
 #=======================================================
 
 #=======================================================
@@ -99,37 +99,26 @@ def metropolis(nSteps,T): #metropolis algorithm
 
   return Eobs, Mobs
 
-def Probability(Eobs,T): #calculates probability of each configuration
-  p = []
-  Z = 0
-
-  Emin = min(Eobs)
-
-  for i in range(int(len(Eobs) * 0.5) ,len(Eobs)):
-    Z = Z + np.exp(-(Eobs[i] - Emin) / T)
-
-  for j in range(int(len(Eobs) * 0.5) ,len(Eobs)):
-    p.append(np.exp(-(Eobs[j] - Emin) / T) / Z)
-
-  return p
-
-def Observable_Magnetisation(Eobs,Mobs,T): #avarage magnetisation
+def Observable_Magnetisation(Mobs,T): #avarage magnetization
   M = 0
-  p = Probability(Eobs,T)
+  
+  for i in range(int(len(Mobs) * 0.5)):
+    M = M + Mobs[i + int(len(Mobs) * 0.5)]
 
-  for i in range(int(len(Eobs) * 0.5)):
-    M = M + p[i] * Mobs[i + int(len(Eobs) * 0.5)]
+  M = M / int(len(Mobs) * 0.5)
 
   return abs(M)
 
 def Heat_capacity(Eobs,T): #heat capacity
   E = 0
   E2 = 0
-  p = Probability(Eobs,T)
 
   for i in range(int(len(Eobs) * 0.5)):
-    E = E + Eobs[i + int(len(Eobs) * 0.5)] * p[i]
-    E2 = E2 + (Eobs[i + int(len(Eobs) * 0.5)] ** 2) * p[i]
+    E = E + Eobs[i + int(len(Eobs) * 0.5)]
+    E2 = E2 + (Eobs[i + int(len(Eobs) * 0.5)] ** 2)
+
+  E = E / int(len(Eobs) * 0.5)
+  E2 = E2 / int(len(Eobs) * 0.5)
 
   C = kB * (E2 - E ** 2) / ((kB * T) ** 2)
 
@@ -137,12 +126,13 @@ def Heat_capacity(Eobs,T): #heat capacity
 
 def Observable_Energy(Eobs, T): #energy
   E = 0
-  p = Probability(Eobs,T)
-
+  
   for i in range(int(len(Eobs) * 0.5)):
-    E = E + (Eobs[i + int(len(Eobs) * 0.5)]) * p[i]
+    E = E + Eobs[i + int(len(Eobs) * 0.5)]
 
-  return E 
+  E = E / int(len(Eobs) * 0.5)
+
+  return E
 
 #=======================================================
 
@@ -167,6 +157,7 @@ M = []
 C = []
 E = []
 
+
 for t in T:
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :started')
   m = 0
@@ -175,7 +166,7 @@ for t in T:
   for k in range(50):
     S = Spin_Configuration(Nx, Ny)
     [Eobs,Mobs] = metropolis(nSteps,t)
-    m = m + Observable_Magnetisation(Eobs,Mobs,t)
+    m = m + Observable_Magnetisation(Mobs,t)
     c = c + Heat_capacity(Eobs,t)
     e = e + Observable_Energy(Eobs,t)
 
@@ -183,8 +174,6 @@ for t in T:
   C.append(c / 50)
   E.append(e / 50)
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
-
-
 
 plt.plot(T/Tc, M)
 plt.xlabel('T/Tc')
@@ -200,6 +189,7 @@ plt.plot(T/Tc, E)
 plt.xlabel('T/Tc')
 plt.ylabel('E')
 plt.show()
+
 
 
 

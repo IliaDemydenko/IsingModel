@@ -4,12 +4,12 @@ import random
 
 #=======================================================
 #here you describe the parameters of the system
-Nx = 20 #number of spins in x direction
-Ny = 20 #number of spins in y direction
+Nx = 10 #number of spins in x direction
+Ny = 10 #number of spins in y direction
 J = 1 #interaction energy
-k = 1 #Boltzman constant
-Tc = 2 * J / (k * np.log(np.sqrt(2) + 1)) #critical temperature
-nSteps = 1000000 #number of steps for Metropolis algorithm
+kB = 1 #Boltzman constant
+Tc = 2 * J / (kB * np.log(np.sqrt(2) + 1)) #critical temperature
+nSteps = 10000 #number of steps for Metropolis algorithm
 #=======================================================
 
 #=======================================================
@@ -131,9 +131,19 @@ def Heat_capacity(Eobs,T): #heat capacity
     E = E + Eobs[i + int(len(Eobs) * 0.5)] * p[i]
     E2 = E2 + (Eobs[i + int(len(Eobs) * 0.5)] ** 2) * p[i]
 
-  C = (E2 - E ** 2) / (T ** 2)
+  C = kB * (E2 - E ** 2) / ((kB * T) ** 2)
 
   return C
+
+def Observable_Energy(Eobs, T): #energy
+  E = 0
+  p = Probability(Eobs,T)
+
+  for i in range(int(len(Eobs) * 0.5)):
+    E = E + (Eobs[i + int(len(Eobs) * 0.5)]) * p[i]
+
+  return E 
+
 #=======================================================
 
 #=======================================================
@@ -152,23 +162,29 @@ for t in T:
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
 
 #lets calculate temperature dependencies for magnetization and heat capacity
-T = np.linspace(0.7 * Tc, 3 * Tc, 100)
+T = np.linspace(0.7 * Tc, 3 * Tc, 50)
 M = []
 C = []
+E = []
 
 for t in T:
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :started')
   m = 0
   c = 0
+  e = 0
   for k in range(50):
     S = Spin_Configuration(Nx, Ny)
     [Eobs,Mobs] = metropolis(nSteps,t)
     m = m + Observable_Magnetisation(Eobs,Mobs,t)
     c = c + Heat_capacity(Eobs,t)
+    e = e + Observable_Energy(Eobs,t)
 
   M.append(m / 50)
   C.append(c / 50)
+  E.append(e / 50)
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
+
+
 
 plt.plot(T/Tc, M)
 plt.xlabel('T/Tc')
@@ -179,6 +195,13 @@ plt.plot(T/Tc, C)
 plt.xlabel('T/Tc')
 plt.ylabel('C')
 plt.show()
+
+plt.plot(T/Tc, E)
+plt.xlabel('T/Tc')
+plt.ylabel('E')
+plt.show()
+
+
 
 
 

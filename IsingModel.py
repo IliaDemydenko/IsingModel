@@ -134,7 +134,6 @@ def Observable_Energy(Eobs, T): #energy
 
 
 #lets show spin configuration for different temperatures
-'''
 T = [0.5 * Tc, 1 * Tc, 2 * Tc]
 
 for t in T:
@@ -144,7 +143,6 @@ for t in T:
   [Eobs,Mobs] = metropolis(nSteps,t)
   Plot(S)
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
-'''
 
 #lets calculate temperature dependencies for magnetization and heat capacity
 T = np.linspace(0.7 * Tc, 3 * Tc, 50)

@@ -103,9 +103,7 @@ def Observable_Magnetisation(Mobs,T): #avarage magnetization
   M = 0
   
   for i in range(int(len(Mobs) * 0.5)):
-    M = M + Mobs[i + int(len(Mobs) * 0.5)]
-
-  M = M / int(len(Mobs) * 0.5)
+    M = M + Mobs[i + int(len(Mobs) * 0.5)] / int(len(Mobs) * 0.5)
 
   return abs(M)
 
@@ -114,11 +112,8 @@ def Heat_capacity(Eobs,T): #heat capacity
   E2 = 0
 
   for i in range(int(len(Eobs) * 0.5)):
-    E = E + Eobs[i + int(len(Eobs) * 0.5)]
-    E2 = E2 + (Eobs[i + int(len(Eobs) * 0.5)] ** 2)
-
-  E = E / int(len(Eobs) * 0.5)
-  E2 = E2 / int(len(Eobs) * 0.5)
+    E = E + Eobs[i + int(len(Eobs) * 0.5)] / int(len(Eobs) * 0.5)
+    E2 = E2 + (Eobs[i + int(len(Eobs) * 0.5)] ** 2) / int(len(Eobs) * 0.5)
 
   C = kB * (E2 - E ** 2) / ((kB * T) ** 2)
 
@@ -128,9 +123,7 @@ def Observable_Energy(Eobs, T): #energy
   E = 0
   
   for i in range(int(len(Eobs) * 0.5)):
-    E = E + Eobs[i + int(len(Eobs) * 0.5)]
-
-  E = E / int(len(Eobs) * 0.5)
+    E = E + Eobs[i + int(len(Eobs) * 0.5)] / int(len(Eobs) * 0.5)
 
   return E
 
@@ -141,6 +134,7 @@ def Observable_Energy(Eobs, T): #energy
 
 
 #lets show spin configuration for different temperatures
+'''
 T = [0.5 * Tc, 1 * Tc, 2 * Tc]
 
 for t in T:
@@ -150,13 +144,13 @@ for t in T:
   [Eobs,Mobs] = metropolis(nSteps,t)
   Plot(S)
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
+'''
 
 #lets calculate temperature dependencies for magnetization and heat capacity
 T = np.linspace(0.7 * Tc, 3 * Tc, 50)
 M = []
 C = []
 E = []
-
 
 for t in T:
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :started')

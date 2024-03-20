@@ -183,9 +183,3 @@ plt.plot(T/Tc, E)
 plt.xlabel('T/Tc')
 plt.ylabel('E')
 plt.show()
-
-
-
-
-
-

@@ -145,7 +145,7 @@ for t in T:
   print('Stage', np.where(T == t)[0][0],', T=',t/Tc,'Tc :finished')
 
 #lets calculate temperature dependencies for magnetization and heat capacity
-T = np.linspace(0.7 * Tc, 3 * Tc, 50)
+T = np.linspace(0.7 * Tc, 3 * Tc, 100)
 M = []
 C = []
 E = []

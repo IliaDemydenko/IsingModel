@@ -10,6 +10,7 @@ Functions:
 - Probability(Eobs,T) - calculates probability of each configuration based on Gibbs distribution;
 - Observable_Magnetisation(Eobs,Mobs,T) - calculates observable magnetization;
 - Heat_capacity(Eobs,T) - calculates observable heat capacity.
+- Observable_Energy(Eobs,T) - calculates observable energy;
 
 NOTE:
 1) All parameters of sistem you can set at the beginning.

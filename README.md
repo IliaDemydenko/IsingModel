@@ -1,4 +1,4 @@
-This code simulates 2d Ising model of feromagnetic without external magnetic field. It is an university project.
+This code simulates 2d Ising model of ferromagnetic without external magnetic field. It is an university project.
 
 Functions:
 - Spin_Configuration(Nx, Ny) - generates random spin configuration with sizes Nx, Ny;
